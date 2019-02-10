@@ -27,6 +27,30 @@ function initiateApp(){
 	addModalCloseHandler();
 }
 function makeGallery(imageArray){
+
+	for (var i= 0; i< imageArray.length; i++) {
+
+		var theImage=imageArray[i];
+
+		console.log('Image URL:', imageArray[i]);
+
+		var figure = $('<figure>', {
+			class: "imageGallery col-xs-12 col-sm-6 col-md-4",
+			css: {'background-image': 'url("'+imageArray[i] + '")'},
+		});
+		// debugger
+		var caption= $('<figcaption>',{
+			text: theImage.slice(7)
+		})
+
+		figure.append(caption);
+		figure.click(displayImage);
+
+
+		$('#gallery').append(figure);
+	}
+
+
 	//use loops and jquery dom creation to make the html structure inside the #gallery section
 
 	//create a loop to go through the pictures
@@ -39,11 +63,29 @@ function makeGallery(imageArray){
 }
 
 function addModalCloseHandler(){
+	$('img').click(function(){
+		$('#galleryModal').modal('hide')
+	});
 	//add a click handler to the img element in the image modal.  When the element is clicked, close the modal
-	//for more info, check here: https://www.w3schools.com/bootstrap/bootstrap_ref_js_modal.asp	
+	//for more info, check here: https://www.w3schools.com/bootstrap/bootstrap_ref_js_modal.asp
 }
 
 function displayImage(){
+	console.log("this is display", this);
+	var imageSource= $(this).css('background-image');
+	var slash= imageSource.lastIndexOf('/');
+	var sliceOne= imageSource.slice(slash +1,-2);
+
+
+	console.log(imageSource);
+	console.log('Image Source:', imageSource);
+
+	$('.modal-title').text(sliceOne);
+	$('.modal-body img').attr('src', 'images/' + sliceOne);
+
+	$('#galleryModal').modal('show');
+
+
 	//find the url of the image by grabbing the background-image source, store it in a variable
 	//grab the direct url of the image by getting rid of the other pieces you don't need
 
